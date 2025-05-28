@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
@@ -6,15 +8,17 @@ class EstateProperty(models.Model):
 
     name = fields.Char(string='Title', required=True)
     description = fields.Text(string='Description')
+    property_type_id = fields.Many2one(string='Property Type', comodel_name='estate.property.type')
     postcode = fields.Char(string='Postcode')
-    bedrooms = fields.Integer(string='Bedrooms')
+    bedrooms = fields.Integer(string='Bedrooms', default=2)
     facades = fields.Integer(string='Facades')
     garage = fields.Boolean(string='Garage')
     garden = fields.Boolean(string='Garden')
     garden_area = fields.Float(string='Gargen Area (sqm)', digits=(8,2))
     living_area = fields.Float(string='Living Area (sqm)', digits=(8,2))
     expected_price = fields.Float(string='Expected Price', digits=(16,2), required=True)
-    date_availability = fields.Date(string='Available From')
+    selling_price = fields.Float(string='Selling Price', digits=(16, 2), readonly=True, copy=False)
+    availability_date = fields.Date(string='Available From', copy=False, default=date.today() + relativedelta(months=3))
     garden_orientation = fields.Selection(string='Garden Orientation', selection=[
         ('north', 'North'),
         ('south', 'South'),
@@ -22,3 +26,14 @@ class EstateProperty(models.Model):
         ('west', 'West')
     ])
 
+    active = fields.Boolean(string='Active', default=True)
+    state = fields.Selection(string='State', default='new', selection=[
+        ('new', 'New'),
+        ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('canceled', 'Canceled')
+    ])
+
+    user_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
+    client_id = fields.Many2one('res.partner', string='Buyer')
