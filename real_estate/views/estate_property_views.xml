@@ -41,10 +41,11 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <sheet>
-                    <div class="oe_title ml16">
-                        <h1 class="mb16">
+                    <div class="oe_title ml16 mb8 mt24">
+                        <h1 class="mb8">
                             <field name="name" class="mb16"/>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags" class="mb16"/>
                     </div>
                     <group class="mb16 ml16">
                         <group>
@@ -60,21 +61,27 @@
                     <notebook>
                         <page string="Description" class="ml16">
                             <group class="ml16">
-                                <field name="description" class="ml16"/>
-                                <field name="bedrooms" class="ml16"/>
-                                <field name="living_area" class="ml16"/>
-                                <field name="facades" class="ml16"/>
-                                <field name="garage" class="ml16"/>
-                                <field name="garden" class="ml16"/>
-                                <field name="garden_area" class="ml16"/>
-                                <field name="garden_orientation" class="ml16"/>
-                                <field name="active" class="ml16"/>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="total_area"/>
+                                <field name="active"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group class="ml16">
+                                <field name="offer_ids" string="Offers"/>
                             </group>
                         </page>
                         <page string="Other Info">
                             <group class="ml16 col-4">
-                                <field name="user_id" class="ml16"/>
-                                <field name="client_id" class="ml16"/>
+                                <field name="user_id"/>
+                                <field name="client_id"/>
                             </group>
                         </page>
                     </notebook>
