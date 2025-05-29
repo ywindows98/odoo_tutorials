@@ -19,6 +19,7 @@ class EstateProperty(models.Model):
     total_area = fields.Float(string='Total Area (sqm)', digits=(10,2), compute='_compute_total_area')
     expected_price = fields.Float(string='Expected Price', digits=(16,2), required=True)
     selling_price = fields.Float(string='Selling Price', digits=(16, 2), readonly=True, copy=False)
+    best_price = fields.Float(string='Best Price', digits=(16,2), compute='_compute_best_price')
     availability_date = fields.Date(string='Available From', copy=False, default=date.today() + relativedelta(months=3))
     garden_orientation = fields.Selection(string='Garden Orientation', selection=[
         ('north', 'North'),
@@ -50,3 +51,8 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price'))
