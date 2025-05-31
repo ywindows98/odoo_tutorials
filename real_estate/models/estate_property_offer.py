@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -28,11 +29,33 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
 
+
+    def _check_for_accepted_offers(self):
+        related_property = self.property_id
+        if 'accepted' in related_property.offer_ids.mapped('status'):
+            return True
+
+        return False
+
     def accept_estate_property_offer_action(self):
-        for record in self:
-            record.status = 'accepted'
+        if not self._check_for_accepted_offers():
+            self.status = 'accepted'
+            related_property = self.property_id
+            related_property.selling_price = self.price
+            related_property.partner_id = self.partner_id
+        else:
+            raise UserError('Multiple offers can\'t be accepted at the same time.')
+
+        return True
 
     def refuse_estate_property_offer_action(self):
-        for record in self:
-            record.status = ('refused')
+        if self.status == 'accepted':
+            related_property = self.property_id
+            related_property.selling_price = None
+            related_property.partner_id = None
+
+        self.status = 'refused'
+
+
+        return True
 
