@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     facades = fields.Integer(string='Facades')
     garage = fields.Boolean(string='Garage')
     garden = fields.Boolean(string='Garden')
-    garden_area = fields.Float(string='Gargen Area (sqm)', digits=(8,2))
+    garden_area = fields.Float(string='Garden Area (sqm)', digits=(8,2))
     living_area = fields.Float(string='Living Area (sqm)', digits=(8,2))
     total_area = fields.Float(string='Total Area (sqm)', digits=(10,2), compute='_compute_total_area')
     expected_price = fields.Float(string='Expected Price', digits=(16,2), required=True)
@@ -56,3 +56,15 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0)
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
+            # return {'warning': {
+            #     'title': _("Warning"),
+            #     'message': ('The garden option is removed from this property.')}}
