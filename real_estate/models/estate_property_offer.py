@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
+    _order = 'price desc'
 
     # name = fields.Char(string='Name', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True)
