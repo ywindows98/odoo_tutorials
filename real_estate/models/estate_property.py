@@ -1,5 +1,7 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
+
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -46,6 +48,21 @@ class EstateProperty(models.Model):
 
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'The expected price of the property must be strictly positive.'),
+
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price of the property must be positive.')
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2) and record.expected_price > record.selling_price:
+                if record.selling_price < record.expected_price * 0.9:
+                    raise ValidationError('The selling price must be at least 90% of the expected price! '
+                                          'You have to lower the expected price to accept this offer.')
 
 
     @api.depends('living_area', 'garden_area')
@@ -76,11 +93,17 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'canceled':
                 raise UserError('A canceled property can\'t be sold.')
-                return True
+            else:
+                record.state = 'sold'
+
+        return True
 
     def cancel_estate_property_action(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError('A sold property can\'t be canceled.')
-                return True
+            else:
+                record.state = 'canceled'
+
+        return True
 
