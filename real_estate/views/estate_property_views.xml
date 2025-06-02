@@ -54,7 +54,7 @@
                     </div>
                     <group class="mb16 ml16">
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true, 'no_open': true}"/>
                             <field name="postcode"/>
                             <field name="availability_date"/>
                         </group>
