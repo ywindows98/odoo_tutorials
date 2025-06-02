@@ -50,7 +50,7 @@
                         <h1 class="mb12" >
                             <field name="name"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags" class="mb16" string="Tags:"/>
+                        <field name="tag_ids" widget="many2many_tags" class="mb16" string="Tags:" options="{'color_field': 'color'}"/>
                     </div>
                     <group class="mb16 ml16">
                         <group>
