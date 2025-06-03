@@ -10,6 +10,14 @@ class EstatePropertyType(models.Model):
 
     sequence = fields.Integer(string='Sequence', default=1, help='Used to order types. Lower is better.')
 
+    offer_ids = fields.One2many('estate.property.offer', 'property_type_id', string='Offers')
+    offer_count = fields.Integer(string='Offers Count', compute='_compute_offer_count')
+
     _sql_constraints = [
         ('unique_name', 'unique (name)', 'This type already exists!')
     ]
+
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        for property_type in self:
+            property_type.offer_count = len(property_type.offer_ids)
