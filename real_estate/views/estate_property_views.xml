@@ -12,6 +12,7 @@
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
@@ -105,5 +106,11 @@
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="real.estate.real_estate_estate_property_view_search"/>
+        <field name="context">
+            {
+                'search_default_available': True
+            }
+        </field>
     </record>
 </odoo>
