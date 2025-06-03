@@ -17,6 +17,8 @@ class EstatePropertyOffer(models.Model):
         ('refused', 'Refused')
     ])
 
+    property_type_id = fields.Many2one(string='Property Type', related='property_id.property_type_id', store=True)
+
     validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
 

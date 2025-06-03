@@ -12,6 +12,7 @@
                 <button name="accept_estate_property_offer_action" type="object" icon="fa-check" title="Accept" invisible="status in ['accepted', 'refused']"/>
                 <button name="refuse_estate_property_offer_action" type="object" icon="fa-times" title="Refuse" invisible="status in ['accepted', 'refused']"/>
                 <field name="status" readonly="True"/>
+<!--                <field name="property_type_id"/>-->
             </tree>
         </field>
     </record>

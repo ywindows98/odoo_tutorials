@@ -106,10 +106,9 @@
         <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">tree,form</field>
-        <field name="search_view_id" ref="real.estate.real_estate_estate_property_view_search"/>
         <field name="context">
             {
-                'search_default_available': True
+                'search_default_available': 1
             }
         </field>
     </record>
