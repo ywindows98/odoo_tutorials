@@ -4,7 +4,11 @@
         <field name="name">estate.property.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <tree string="Properties">
+            <tree string="Properties"
+                  decoration-bf="state in ['offer_accepted']"
+                  decoration-success="state in ['offer_received', 'offer_accepted']"
+                  decoration-danger="state in ['canceled']"
+                  decoration-muted="state in ['sold']">
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
@@ -13,6 +17,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="availability_date" optional="True"/>
+                <field name="state" optional="True"/>
             </tree>
         </field>
     </record>
