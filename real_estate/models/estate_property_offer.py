@@ -48,6 +48,8 @@ class EstatePropertyOffer(models.Model):
             related_property = self.property_id
             related_property.selling_price = self.price
             related_property.partner_id = self.partner_id
+            if related_property.state not in ['offer_accepted', 'sold', 'canceled']:
+                related_property.state = 'offer_accepted'
         else:
             raise UserError('Multiple offers can\'t be accepted at the same time.')
 

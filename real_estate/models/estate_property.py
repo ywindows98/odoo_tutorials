@@ -88,6 +88,10 @@ class EstateProperty(models.Model):
             #     'title': _("Warning"),
             #     'message': ('The garden option is removed from this property.')}}
 
+    @api.onchange('offer_ids')
+    def _onchange_offer_ids(self):
+        if len(self.offer_ids)>0 and self.state not in ['offer_received', 'offer_accepted', 'sold', 'canceled']:
+            self.state = 'offer_received'
 
     # Actions
     def sell_estate_property_action(self):
