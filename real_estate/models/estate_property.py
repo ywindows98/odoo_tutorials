@@ -57,15 +57,24 @@ class EstateProperty(models.Model):
          'The selling price of the property must be positive.')
     ]
 
+    # CRUD methods
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_canceled(self):
+        allowed_delete_states = ['new', 'canceled']
+        if not all(record.state in allowed_delete_states for record in self):
+            raise UserError('An estate property can\'t be deleted if it is not New or not Canceled.')
+
+    # Constraints
     @api.constrains('selling_price', 'expected_price')
     def check_selling_price(self):
         for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2) and record.expected_price > record.selling_price:
+            if (not float_is_zero(record.selling_price, precision_digits=2)
+                    and record.expected_price > record.selling_price):
                 if record.selling_price < record.expected_price * 0.9:
                     raise ValidationError('The selling price must be at least 90% of the expected price! '
                                           'You have to lower the expected price to accept this offer.')
 
-
+    # Compute/Onchange
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
