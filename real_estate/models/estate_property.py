@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -93,14 +93,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
-            # return {'warning': {
-            #     'title': _("Warning"),
-            #     'message': ('The garden option is removed from this property.')}}
+            return {'warning': {
+                'title': _("Warning"),
+                'message': ('The garden option is removed from this property.')}}
 
-    @api.onchange('offer_ids')
-    def _onchange_offer_ids(self):
-        if len(self.offer_ids)>0 and self.state not in ['offer_received', 'offer_accepted', 'sold', 'canceled']:
-            self.state = 'offer_received'
+    # Implemented in the offer CRUD methods
+    # @api.onchange('offer_ids')
+    # def _onchange_offer_ids(self):
+    #     if len(self.offer_ids)>0 and self.state not in ['offer_received', 'offer_accepted', 'sold', 'canceled']:
+    #         self.state = 'offer_received'
 
     # Actions
     def sell_estate_property_action(self):

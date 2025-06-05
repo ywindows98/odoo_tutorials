@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from datetime import date
 from dateutil.relativedelta import relativedelta
@@ -27,6 +27,23 @@ class EstatePropertyOffer(models.Model):
          'The offer price must be strictly positive.')
     ]
 
+    # CRUD methods
+    @api.model
+    def create(self, vals):
+        property_id = self.env['estate.property'].browse(vals['property_id'])
+        max_price = max(property_id.offer_ids.mapped('price'), default=0)
+
+        if vals['price'] < max_price:
+            raise UserError(_('A new offer can only have a price higher or equal to the highest existing offer (%s).',
+                              max_price))
+        else:
+            if property_id.state not in ['offer_accepted', 'sold', 'canceled']:
+                property_id.state = 'offer_received'
+
+        # The parent method
+        return super().create(vals)
+
+    # Compute/Onchange
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -36,7 +53,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
 
-
+    # Utility
     def _check_for_accepted_offers(self):
         related_property = self.property_id
         if 'accepted' in related_property.offer_ids.mapped('status'):
@@ -44,6 +61,7 @@ class EstatePropertyOffer(models.Model):
 
         return False
 
+    # Actions
     def accept_estate_property_offer_action(self):
         if not self._check_for_accepted_offers():
             self.status = 'accepted'
