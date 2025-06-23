@@ -8,13 +8,24 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
+
+
     def sell_estate_property_action(self):
+        journal = self.env['account.journal'].search([
+            ('type', '=', 'sale'),
+            ('company_id', '=', self.env.company.id)
+        ], limit=1)
+
+        if not journal:
+            raise UserError("No Sales Journal found.")
+
         invoice_vals_list = []
 
         invoice_vals = {
-            'name': f'{self.name} sell invoice',
+            # 'name': f'{self.name} sell invoice',
             'move_type': 'out_invoice',
             'partner_id': self.partner_id.id,
+            'journal_id': journal.id,
             'invoice_line_ids': []
         }
 
@@ -34,6 +45,8 @@ class EstateProperty(models.Model):
         invoice_vals['invoice_line_ids'] += invoice_line_vals
         invoice_vals_list.append(invoice_vals)
 
-        self.env['account.move'].sudo().with_context(default_move_type='out_invoice').create(invoice_vals_list)
+        invoice = self.env['account.move'].sudo().with_context(default_move_type='out_invoice').create(invoice_vals_list)
+
+        invoice.action_post()
 
         return super().sell_estate_property_action()
