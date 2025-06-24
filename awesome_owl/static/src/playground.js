@@ -9,7 +9,13 @@ export class Playground extends Component {
     static components = { Counter, Card };
 
     setup() {
+        this.state = useState({ sum: 2 });
+
         this.str1 = "<div class='text-primary'>some content</div>";
         this.str2 = markup("<div class='text-primary'>some content</div>");
+    }
+
+    incrementSum() {
+        this.state.sum++;
     }
 }
