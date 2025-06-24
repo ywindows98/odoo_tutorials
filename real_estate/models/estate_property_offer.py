@@ -27,7 +27,18 @@ class EstatePropertyOffer(models.Model):
          'The offer price must be strictly positive.')
     ]
 
-    # CRUD methods
+    # 4. Compute, inverse and search methods in the same order as field declaration
+    @api.depends('validity')
+    def _compute_date_deadline(self):
+        for record in self:
+            record.date_deadline = (record.create_date or fields.Date.today()) + relativedelta(days=record.validity)
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            record.validity = (record.date_deadline - record.create_date.date()).days
+
+
+    # 7. CRUD methods (ORM overrides)
     @api.model
     def create(self, vals):
         property_id = self.env['estate.property'].browse(vals['property_id'])
@@ -43,26 +54,8 @@ class EstatePropertyOffer(models.Model):
         # The parent method
         return super().create(vals)
 
-    # Compute/Onchange
-    @api.depends('validity')
-    def _compute_date_deadline(self):
-        for record in self:
-            record.date_deadline = (record.create_date or fields.Date.today()) + relativedelta(days=record.validity)
-
-    def _inverse_date_deadline(self):
-        for record in self:
-            record.validity = (record.date_deadline - record.create_date.date()).days
-
-    # Utility
-    def _check_for_accepted_offers(self):
-        related_property = self.property_id
-        if 'accepted' in related_property.offer_ids.mapped('status'):
-            return True
-
-        return False
-
-    # Actions
-    def accept_estate_property_offer_action(self):
+    # 8. Action methods
+    def action_accept_estate_property_offer(self):
         if not self._check_for_accepted_offers():
             self.status = 'accepted'
             related_property = self.property_id
@@ -75,7 +68,7 @@ class EstatePropertyOffer(models.Model):
 
         return True
 
-    def refuse_estate_property_offer_action(self):
+    def action_refuse_estate_property_offer(self):
         if self.status == 'accepted':
             related_property = self.property_id
             related_property.selling_price = None
@@ -85,4 +78,13 @@ class EstatePropertyOffer(models.Model):
 
 
         return True
+
+
+    # 9. And finally, other business methods.
+    def _check_for_accepted_offers(self):
+        related_property = self.property_id
+        if 'accepted' in related_property.offer_ids.mapped('status'):
+            return True
+
+        return False
 

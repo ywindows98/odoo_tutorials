@@ -17,6 +17,7 @@ class EstatePropertyType(models.Model):
         ('unique_name', 'unique (name)', 'This type already exists!')
     ]
 
+    # 4. Compute, inverse and search methods in the same order as field declaration
     @api.depends('offer_ids')
     def _compute_offer_count(self):
         for property_type in self:

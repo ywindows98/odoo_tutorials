@@ -6,10 +6,14 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
+    # 1. Private attributes (_name, _description, _inherit, _sql_constraints, …)
     _name = 'estate.property'
     _description = 'Estate Property'
     _order = 'id desc'
 
+    # 2. Default method and default_get
+
+    # 3. Field declarations
     name = fields.Char(string='Title', required=True)
     description = fields.Text(string='Description')
     property_type_id = fields.Many2one(string='Property Type', comodel_name='estate.property.type')
@@ -57,24 +61,7 @@ class EstateProperty(models.Model):
          'The selling price of the property must be positive.')
     ]
 
-    # CRUD methods
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_new_or_canceled(self):
-        allowed_delete_states = ['new', 'canceled']
-        if not all(record.state in allowed_delete_states for record in self):
-            raise UserError('An estate property can\'t be deleted if it is not New or not Canceled.')
-
-    # Constraints
-    @api.constrains('selling_price', 'expected_price')
-    def check_selling_price(self):
-        for record in self:
-            if (not float_is_zero(record.selling_price, precision_digits=2)
-                    and record.expected_price > record.selling_price):
-                if record.selling_price < record.expected_price * 0.9:
-                    raise ValidationError('The selling price must be at least 90% of the expected price! '
-                                          'You have to lower the expected price to accept this offer.')
-
-    # Compute/Onchange
+    # 4. Compute, inverse and search methods in the same order as field declaration
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -84,6 +71,18 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0)
+
+    # 5. Selection method (methods used to return computed values for selection fields)
+
+    # 6. Constrains methods (@api.constrains) and onchange methods (@api.onchange)
+    @api.constrains('selling_price', 'expected_price')
+    def check_selling_price(self):
+        for record in self:
+            if (not float_is_zero(record.selling_price, precision_digits=2)
+                    and record.expected_price > record.selling_price):
+                if record.selling_price < record.expected_price * 0.9:
+                    raise ValidationError('The selling price must be at least 90% of the expected price! '
+                                          'You have to lower the expected price to accept this offer.')
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -103,8 +102,15 @@ class EstateProperty(models.Model):
     #     if len(self.offer_ids)>0 and self.state not in ['offer_received', 'offer_accepted', 'sold', 'canceled']:
     #         self.state = 'offer_received'
 
-    # Actions
-    def sell_estate_property_action(self):
+    # 7. CRUD methods (ORM overrides)
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_canceled(self):
+        allowed_delete_states = ['new', 'canceled']
+        if not all(record.state in allowed_delete_states for record in self):
+            raise UserError('An estate property can\'t be deleted if it is not New or not Canceled.')
+
+    # 8. Action methods
+    def action_sell_estate_property(self):
         for record in self:
             if record.state == 'canceled':
                 raise UserError('A canceled property can\'t be sold.')
@@ -113,7 +119,7 @@ class EstateProperty(models.Model):
 
         return True
 
-    def cancel_estate_property_action(self):
+    def action_cancel_estate_property(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError('A sold property can\'t be canceled.')
@@ -122,3 +128,4 @@ class EstateProperty(models.Model):
 
         return True
 
+    # 9. And finally, other business methods.

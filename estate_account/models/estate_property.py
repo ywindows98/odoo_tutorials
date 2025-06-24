@@ -49,4 +49,4 @@ class EstateProperty(models.Model):
 
         invoice.action_post()
 
-        return super().sell_estate_property_action()
+        return super().action_sell_estate_property()
