@@ -6,13 +6,18 @@
             <Counter onChange.bind="incrementSum"/>
             <Counter onChange.bind="incrementSum"/>
             <div>
-                Sum: <t t-esc="state.sum"/>
+                 Sum: <t t-esc="state.sum"/>
             </div>
         </div>
-        <div>
-            <Card title="'card 1'" content="this.str1"/>
-            <Card title="'card 2'" content="this.str2"/>
+        <div class="mx-auto border border-1 mt-3 p-2 d-block">
+            <div class="p-2 border border-2 w-50 text-center mx-auto">
+                <TodoList/>
+            </div>
         </div>
+<!--        <div>-->
+<!--            <Card title="'card 1'" content="this.str1"/>-->
+<!--            <Card title="'card 2'" content="this.str2"/>-->
+<!--        </div>-->
     </t>
 
 </templates>
