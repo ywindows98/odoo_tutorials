@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="mx-auto border border-1 mt-3 p-2 d-block">
-            <div class="p-2 border border-2 w-50 text-center mx-auto">
+            <div class="p-2 border border-2 w-50 mx-auto">
                 <TodoList/>
             </div>
         </div>
