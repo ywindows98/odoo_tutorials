@@ -14,10 +14,19 @@
                 <TodoList/>
             </div>
         </div>
-<!--        <div>-->
-<!--            <Card title="'card 1'" content="this.str1"/>-->
-<!--            <Card title="'card 2'" content="this.str2"/>-->
-<!--        </div>-->
+        <div>
+            <Card title="'card 1'">
+                Text1
+            </Card>
+            <Card title="'card 2'">
+                Text2
+            </Card>
+            <Card title="'card 3'">
+                <t t-set-slot="default">
+                    <Counter onChange.bind="incrementSum"/>
+                </t>
+            </Card>
+        </div>
     </t>
 
 </templates>

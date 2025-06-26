@@ -7,6 +7,12 @@ export class Card extends Component {
 
     static props = {
         title: {type: String},
-        content: {type: String}
+
+        slots: {
+            type: Object,
+            shape: {
+                default: true
+            },
+        }
     };
 }
