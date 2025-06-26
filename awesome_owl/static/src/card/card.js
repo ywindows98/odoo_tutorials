@@ -15,4 +15,12 @@ export class Card extends Component {
             },
         }
     };
+
+    setup() {
+        this.cardState = useState({opened: true});
+    }
+
+    toggleCard(){
+        this.cardState.opened = !this.cardState.opened;
+    }
 }
