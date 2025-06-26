@@ -1,0 +1,5 @@
+id,name,color
+tag_residential,Residential,5
+tag_commertial,Commertial,6
+tag_industrial,Industrial,7
+tag_land,Land,8
