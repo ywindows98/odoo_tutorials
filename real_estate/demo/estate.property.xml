@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <record id="property_1" model="estate.property">
+            <field name="name">Big Villa</field>
+            <field name="state">new</field>
+            <field name="description">A nice big villa</field>
+            <field name="postcode">12345</field>
+            <field name="availability_date" eval="'2026-02-02'"/>
+            <field name="expected_price" eval="1600000"/>
+            <field name="bedrooms" eval="6"/>
+            <field name="living_area" eval="100"/>
+            <field name="facades" eval="4"/>
+            <field name="garage" eval="True"/>
+            <field name="garden" eval="True"/>
+            <field name="garden_area" eval="100000"/>
+            <field name="garden_orientation">south</field>
+        </record>
+
+        <record id="property_3" model="estate.property">
+            <field name="name">Trailer home</field>
+            <field name="state">canceled</field>
+            <field name="description">Home in a trailer park</field>
+            <field name="postcode">54321</field>
+            <field name="availability_date" eval="'1970-01-01'"/>
+            <field name="expected_price" eval="100000"/>
+            <field name="selling_price" eval="120000"/>
+            <field name="bedrooms" eval="1"/>
+            <field name="living_area" eval="10"/>
+            <field name="facades" eval="4"/>
+            <field name="garage" eval="False"/>
+        </record>
+    </data>
+</odoo>
