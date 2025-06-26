@@ -7,6 +7,7 @@
             <label t-att-for="props.todo.id" t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
                 <t t-esc="props.todo.id"/>. <t t-esc="props.todo.description"/>
             </label>
+            <span role="button" class="fa fa-remove" t-on-click="deleteOnClick"/>
         </div>
     </t>
 
