@@ -19,6 +19,6 @@
         'data/estate.property.type.csv',
         'data/estate.property.xml',
         'data/estate.property.type.xml',
-        # 'data/estate.property.offer.xml',
+        'data/estate.property.offer.xml',
     ],
 }
