@@ -44,5 +44,33 @@
             <field name="facades" eval="4"/>
             <field name="garage" eval="False"/>
         </record>
+
+        <record id="property_4" model="estate.property">
+            <field name="name">Medium House</field>
+            <field name="state">new</field>
+            <field name="description">A nice family house</field>
+            <field name="postcode">55545</field>
+            <field name="availability_date" eval="datetime.now() + relativedelta(months=2)"/>
+            <field name="expected_price" eval="220000"/>
+            <field name="bedrooms" eval="3"/>
+            <field name="living_area" eval="72"/>
+            <field name="facades" eval="2"/>
+            <field name="garage" eval="True"/>
+            <field name="garden" eval="True"/>
+            <field name="garden_area" eval="120"/>
+            <field name="garden_orientation">north</field>
+            <field name="offer_ids" eval="[
+                Command.create({
+                    'partner_id': ref('base.res_partner_12'),
+                    'price': 215000,
+                    'validity': 14,
+                }),
+                Command.create({
+                    'partner_id': ref('base.res_partner_2'),
+                    'price': 240000,
+                    'validity': 14,
+                }),
+            ]"/>
+        </record>
     </data>
 </odoo>
