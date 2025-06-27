@@ -19,5 +19,17 @@
             <field name="price" eval="1500001"/>
             <field name="validity" eval="14"/>
         </record>
+
+        <function model="estate.property.offer" name="action_refuse_estate_property_offer">
+            <value eval="[ref('property_offer_1')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="action_refuse_estate_property_offer">
+            <value eval="[ref('property_offer_2')]"/>
+        </function>
+
+        <function model="estate.property.offer" name="action_accept_estate_property_offer">
+            <value eval="[ref('property_offer_3')]"/>
+        </function>
     </data>
 </odoo>
