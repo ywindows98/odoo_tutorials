@@ -7,9 +7,10 @@
     'summary': 'Store real estate listings and control offers.',
     'author': 'ywindows98',
     'application': True,
-    'category': 'Real Estate',
+    'category': 'Real Estate/Brokerage',
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_type_views.xml',
@@ -20,5 +21,6 @@
         'data/estate.property.xml',
         'data/estate.property.type.xml',
         'data/estate.property.offer.xml',
+
     ],
 }
