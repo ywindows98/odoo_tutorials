@@ -13,6 +13,7 @@
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
 
         <!-- Add the record id to the existing field, without removing existing ones  -->
+        <!-- Automatically assigns manager to have and agent access also -->
         <field name="implied_ids" eval="[(4, ref('group_real_estate_user'))]"/>
     </record>
 </odoo>
