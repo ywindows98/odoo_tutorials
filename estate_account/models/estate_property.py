@@ -11,6 +11,11 @@ class EstateProperty(models.Model):
 
 
     def action_sell_estate_property(self):
+        self.check_access_rights('write')
+        self.check_access_rule('write')
+
+        print(" reached ".center(100, '='))
+
         journal = self.env['account.journal'].sudo().search([
             ('type', '=', 'sale'),
             ('company_id', '=', self.env.company.id)
