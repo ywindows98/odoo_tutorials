@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
 
 
     def action_sell_estate_property(self):
-        journal = self.env['account.journal'].search([
+        journal = self.env['account.journal'].sudo().search([
             ('type', '=', 'sale'),
             ('company_id', '=', self.env.company.id)
         ], limit=1)
