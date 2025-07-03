@@ -18,15 +18,15 @@
     </record>
 
 
-    <record id="real_estate_unrelated_user_property_rule" model="ir.rule">
-        <field name="name">Unrelated agent access to properties rule</field>
-        <field name="model_id" ref="model_estate_property"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_create" eval="False"/>
-        <field name="perm_write" eval="False"/>
-        <field name="perm_unlink" eval="False"/>
-        <field name="groups" eval="[Command.link(ref('group_real_estate_user'))]"/>
-    </record>
+<!--    <record id="real_estate_unrelated_user_property_rule" model="ir.rule">-->
+<!--        <field name="name">Unrelated agent access to properties rule</field>-->
+<!--        <field name="model_id" ref="model_estate_property"/>-->
+<!--        <field name="perm_read" eval="True"/>-->
+<!--        <field name="perm_create" eval="False"/>-->
+<!--        <field name="perm_write" eval="False"/>-->
+<!--        <field name="perm_unlink" eval="False"/>-->
+<!--        <field name="groups" eval="[Command.link(ref('group_real_estate_user'))]"/>-->
+<!--    </record>-->
 
     <record id="real_estate_related_user_property_rule" model="ir.rule">
         <field name="name">Related agent access to properties rule</field>
@@ -36,7 +36,12 @@
         <field name="perm_write" eval="True"/>
         <field name="perm_unlink" eval="True"/>
         <field name="groups" eval="[Command.link(ref('group_real_estate_user'))]"/>
-        <field name="domain_force">['|', ('user_id', '=', user.id), ('user_id', '=', False)]</field>
+        <field name="domain_force">[
+            '&amp;',
+                '|', ('user_id', '=', user.id), ('user_id', '=', False),
+                '|', ('company_id', '=', False), ('company_id', 'in', company_ids)
+        ]
+        </field>
     </record>
 
     <record id="real_estate_manager2_property_rule" model="ir.rule">
@@ -48,4 +53,5 @@
         <field name="perm_unlink" eval="True"/>
         <field name="groups" eval="[Command.link(ref('group_real_estate_manager'))]"/>
     </record>
+
 </odoo>
