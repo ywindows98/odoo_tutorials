@@ -13,6 +13,10 @@ class RealEstateTestCommon(TransactionCase):
     def setUpClass(cls):
         super().setUpClass()
 
+        cls.simple_partner = cls.env['res.partner'].create({
+            'name': 'simple partner'
+        })
+
         cls.simple_company = cls.env['res.company'].create({
             'name': 'simple company'
         })
@@ -21,6 +25,8 @@ class RealEstateTestCommon(TransactionCase):
             'name': 'simple agent',
             'login': 'simple_agent',
             'password': 'simple_agent',
+            # [(6, 0, [])]
+            'company_ids': [Command.set([cls.simple_company.id])],
             'company_id': cls.simple_company.id,
             'groups_id': [
                 Command.link(cls.env.ref('real_estate.group_real_estate_user').id)
@@ -35,7 +41,7 @@ class RealEstateTestCommon(TransactionCase):
             'state': 'sold'
         })
 
-        cls.property_with_no_offers = cls.env['estate.property'].create({
+        cls.property_with_no_offers_sample = cls.env['estate.property'].create({
             'name': 'Sold Property Test',
             'expected_price': 112000,
             'user_id': cls.simple_agent.id,
