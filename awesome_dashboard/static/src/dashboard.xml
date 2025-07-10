@@ -10,13 +10,34 @@
             </t>
 
             <DashboardItem>
-                some text
+                Number of new orders this month:
+                <div class="fs-1 fw-bold text-center">
+                    <t t-esc="statisticsResult.nb_new_orders"/>
+                </div>
             </DashboardItem>
-            <DashboardItem size="2">
-                some text
+            <DashboardItem>
+                Total amount of orders this month:
+                <div class="fs-1 fw-bold text-center">
+                    <t t-esc="statisticsResult.total_amount"/>
+                </div>
             </DashboardItem>
-            <DashboardItem size="1">
-                some text
+            <DashboardItem>
+                Average amount of t-shirt by order this month:
+                <div class="fs-1 fw-bold text-center">
+                    <t t-esc="statisticsResult.average_quantity"/>
+                </div>
+            </DashboardItem>
+            <DashboardItem>
+                Number of cancelled orders this month:
+                <div class="fs-1 fw-bold text-center">
+                    <t t-esc="statisticsResult.nb_cancelled_orders"/>
+                </div>
+            </DashboardItem>
+            <DashboardItem>
+                Average time for an order to go from 'new' to 'sent' or 'cancelled':
+                <div class="fs-1 fw-bold text-center">
+                    <t t-esc="statisticsResult.average_time"/>
+                </div>
             </DashboardItem>
         </Layout>
     </t>
