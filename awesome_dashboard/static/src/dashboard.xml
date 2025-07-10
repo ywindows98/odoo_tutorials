@@ -9,7 +9,15 @@
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
 
-            some content
+            <DashboardItem>
+                some text
+            </DashboardItem>
+            <DashboardItem size="2">
+                some text
+            </DashboardItem>
+            <DashboardItem size="1">
+                some text
+            </DashboardItem>
         </Layout>
     </t>
 
