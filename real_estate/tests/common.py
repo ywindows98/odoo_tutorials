@@ -41,7 +41,7 @@ class RealEstateTestCommon(TransactionCase):
             'state': 'sold'
         })
 
-        cls.property_with_no_offers_sample = cls.env['estate.property'].create({
+        cls.property_with_no_accepted_offers_sample = cls.env['estate.property'].create({
             'name': 'Sold Property Test',
             'expected_price': 112000,
             'user_id': cls.simple_agent.id,

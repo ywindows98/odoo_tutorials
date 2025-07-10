@@ -14,7 +14,13 @@ class EstateProperty(models.Model):
         self.check_access_rights('write')
         self.check_access_rule('write')
 
-        print(" reached ".center(100, '='))
+        # print(" reached ".center(100, '='))
+
+        if len(self.offer_ids) == 0:
+            raise UserError('A property with no offers can`t be sold.')
+
+        if self.state != 'offer_accepted':
+            raise UserError('A property with no accepted offer can`t be sold.')
 
         journal = self.env['account.journal'].sudo().search([
             ('type', '=', 'sale'),

@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -42,8 +42,13 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         property_id = self.env['estate.property'].browse(vals['property_id'])
-        max_price = max(property_id.offer_ids.mapped('price'), default=0)
 
+        isSold = property_id.state == 'sold'
+        if isSold:
+            raise UserError('A new offer can`t be created for a sold property.')
+
+        # Check for max price
+        max_price = max(property_id.offer_ids.mapped('price'), default=0)
         if vals['price'] < max_price:
             raise UserError(_('A new offer can only have a price higher or equal to the highest existing offer (%s).',
                               max_price))
